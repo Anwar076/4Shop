@@ -78,7 +78,10 @@ header{
 
 .product-body{
 	width: 50%;
-	padding: 1em 2em;
+    padding: 1em 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: inherit;
 }
 
 .products .form-control{
@@ -141,3 +144,14 @@ span.collapsing{
 		height: 24px;
 	}
 }
+.product-title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.discount-text {
+    color: red; /* Rode tekstkleur */
+    font-weight: bold; /* Vetgedrukte tekst (optioneel) */
+}
+
+

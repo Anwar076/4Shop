@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->decimal('price', 8, 2);
+            $table->decimal('discount', 4, 1)->default(0);
             $table->boolean('leiding');
             $table->boolean('active')->default(true);
             $table->timestamps();

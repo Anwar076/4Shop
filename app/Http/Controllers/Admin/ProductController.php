@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
+
 
 class ProductController extends Controller
 {
@@ -13,121 +16,60 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view('admin.products.index')
-                ->with(compact('products'));
+        return view('admin.products.index', compact('products'));
     }
 
-    public function create(Request $request)
+    public function create()
     {
-        return view('admin.products.create');
+        $categories = Category::all();
+        return view('admin.products.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
-        $this->validate(request(), [
-            'title' => 'required',
+        $request->validate([
+            'title' => 'required|string|max:255',
             'price' => 'required|numeric',
             'active' => 'required|boolean',
             'leiding' => 'required|boolean',
-            'image' => 'nullable|image',
-            'description' => 'nullable'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Aanpasbaar aan je uploadvereisten
+            'description' => 'nullable|string|max:1000', // Aanpasbaar aan je vereisten
+            'category_id' => 'required|exists:categories,id', // Controleer of de geselecteerde categorie bestaat
         ]);
 
+        // Maak een nieuw product met de ingediende gegevens
         $product = new Product();
-        $product->title = $request->title; 
-        $product->price = $request->price;
-        $product->active = $request->active;
-        $product->leiding = $request->leiding;
-        $product->description = $request->description;
-        if($request->hasFile('image'))
-        {
-            $product->image = $request->image->store('img');
+        $product->title = $request->input('title');
+        $product->price = $request->input('price');
+        $product->active = $request->input('active');
+        $product->leiding = $request->input('leiding');
+        $product->description = $request->input('description');
+        $product->category_id = $request->input('category_id');
+
+        // Upload en opslaan van de afbeelding (indien aanwezig)
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('public/images'); // Aanpasbaar aan je opslagvereisten
+            $product->image = str_replace('public/', '', $imagePath);
         }
+
         $product->save();
-        return redirect()->route('admin.products.types', $product);
+
+        return redirect()->route('admin.products.index')->with('success', 'Product is succesvol toegevoegd.');
     }
 
-    public function types(Product $product)
-    {
-        return view('admin.products.types')
-                ->with(compact('product'));
-    }
-
-    public function types_create(Product $product)
-    {
-        return view('admin.products.types_create')
-                ->with(compact('product'));
-    }
-
-    public function types_store(Product $product, Request $request)
-    {
-        $this->validate(request(), [
-            'title' => 'required',
-            'description' => 'required',
-            'sizes' => 'required'
-        ]);
-        
-        $type = new Type();
-        $type->title = $request->title;
-        $type->description = $request->description;
-        $product->types()->save($type);
-
-        $sizes = collect(explode(',', $request->sizes))
-        ->map(function($size){
-            return strtoupper(trim($size));
-        })
-        ->reject(function($size){
-            return (empty($size) || is_null($size));
-        })
-        ->each(function($size) use($type){
-            $type->sizes()->create([
-                'title' => $size
-            ]);
-        });
-
-        return redirect()->route('admin.products.types', $product);
-
-    }
-
-    public function types_delete(Product $product, Type $type)
-    {
-        $type->delete();
-        return redirect()->route('admin.products.types', $product);
-    }    
 
     public function edit(Product $product)
     {
-        return view('admin.products.edit')
-                ->with(compact('product'));
+        return view('admin.products.edit', compact('product'));
     }
 
     public function update(Request $request, Product $product)
     {
-        $this->validate(request(), [
-            'title' => 'required',
-            'price' => 'required|numeric',
-            'active' => 'required|boolean',
-            'leiding' => 'required|boolean',
-            'image' => 'nullable|image',
-            'description' => 'nullable'
-        ]);
-
-        $product->title = $request->title; 
-        $product->price = $request->price;
-        $product->active = $request->active;
-        $product->leiding = $request->leiding;
-        $product->description = $request->description;
-        if($request->hasFile('image'))
-        {
-            $product->image = $request->image->store('img');
-        }
-        $product->save();
-        return redirect()->route('admin.products.index', $product);
+        // Validatie en update logica hier
     }
 
     public function destroy(Product $product)
     {
-        $product->delete();
-        return redirect()->route('admin.products.index');
+        // Verwijderen logica hier
     }
 }

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>4Shop-   Anwar Agrich</title>
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -44,7 +45,7 @@
       </main>
 
       <footer class="footer">
-        <p><strong>Mail bij vragen: <a href="mailto:winkelbeheer@scoutingrveer.nl">winkelbeheer@scoutingrveer.nl</a></strong> &middot; S.B.B.S. namens Scouting Raamsdonksveer, Kerklaan 22 4942AR Raamsdonksveer, KvK: 41100325, tel: 0162769096.</p>
+        <p><strong>Mail bij vragen: <a href="mailto:D295692@edu.curio.nl">D295692@edu.curio.nl</a></strong> &middot; S.B.B.S. namens Scouting Raamsdonksveer, Kerklaan 22 4942AR Raamsdonksveer, KvK: 93769871, tel: 0612345678 .</p>
       </footer>
 
     </div>

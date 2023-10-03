@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-	
+
 	<div class="d-flex justify-content-between align-items-center my-4">
 		<h4>Producten</h4>
 		<div>
@@ -13,6 +13,7 @@
 		<tr>
 			<th>Titel</th>
 			<th>Prijs</th>
+            <th>categorie</th>
 			<th colspan="4">&nbsp;</th>
 		</tr>
 		@foreach($products as $product)
@@ -39,6 +40,7 @@
 				<td>
 					<a href="{{ route('admin.products.types', $product->id) }}">Soorten en maten</a>
 				</td>
+                <td>{{ $product->category->name }}</td>
 			</tr>
 		@endforeach
 	</table>
