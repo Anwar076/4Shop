@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
@@ -11,10 +12,18 @@ use Mail;
 
 class OrderController extends Controller
 {
+    public function toggle(Order $order)
+    {
+        // Keer de bezorgstatus om
+        $order->update(['delivered' => !$order->delivered]);
+
+        // Redirect terug naar de vorige pagina
+        return redirect()->route('admin.orders.index');
+    }
     public function index()
     {
         return view('admin.orders')
-                ->with('orders', Order::all());
+            ->with('orders', Order::all());
     }
 
     public function show(Order $order)
@@ -31,19 +40,18 @@ class OrderController extends Controller
 
     public function factory()
     {
-        $rules = Order_rule::
-            select(DB::raw('count(id) AS count, description, size'))
+        $rules = Order_rule::select(DB::raw('count(id) AS count, description, size'))
             ->whereRaw('order_id IN (SELECT id FROM orders WHERE payed = 1) AND description <> \'Keycord\' ')
             ->groupBy('description', 'size')->get();
 
         return view('admin.factory')
-                ->with(compact('rules'));
+            ->with(compact('rules'));
     }
 
     public function mail()
     {
         return view('admin.mail')
-                ->with('orders', Order::where('payed', true)->get());
+            ->with('orders', Order::where('payed', true)->get());
     }
 
     public function mail_send(Request $request)
@@ -51,8 +59,7 @@ class OrderController extends Controller
         $orders = Order::where('payed', true)->get();
         $pickup = $request->pickup;
 
-        foreach($orders as $order)
-        {
+        foreach ($orders as $order) {
             Mail::to($order->email)->send(new \App\Mail\OrderReady($order, $pickup));
         }
     }
@@ -61,6 +68,6 @@ class OrderController extends Controller
     {
         $orders = Order::where('payed', true)->get();
         return view('admin.packing')
-                ->with(compact('orders'));
+            ->with(compact('orders'));
     }
 }
