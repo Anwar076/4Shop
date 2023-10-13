@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,6 +49,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::get('products/{product}/types/create', [AdminProductController::class, 'types_create'])->name('admin.products.types.create');
     Route::post('products/{product}/types/create', [AdminProductController::class, 'types_store'])->name('admin.products.types.store');
     Route::delete('products/{product}/types/{type}', [AdminProductController::class, 'types_delete'])->name('admin.products.types.delete');
+    Route::get('products/{product}/edit',[AdminProductController::class, 'edit'])->name('admin.products.edit');
+    Route::patch('products/{product}', [AdminProductController::class, 'update'])->name('admin.products.update');
+
 
     Route::get('orders/factory', [AdminOrderController::class, 'factory'])->name('admin.orders.factory');
     Route::get('orders/mail', [AdminOrderController::class, 'mail'])->name('admin.orders.mail');
@@ -56,11 +60,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::resource('orders', AdminOrderController::class, ['as' => 'admin'])->only(['index', 'show', 'destroy']);
 
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class, ['as' => 'admin'])->except('show');
-    Route::get('admin/categories/{category}/products', 'Admin\CategoryController@products')->name('admin.categories.products');
-
+    Route::get('categories/{category}/products', 'Admin\CategoryController@products')->name('admin.categories.products');
+    Route::get('orders/{order}/toggle', [AdminOrderController::class, 'toggle'])->name('admin.orders.toggle');
 });
 
 Route::view('/login', 'auth.login')->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('authenticate');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::get('/categories/{category}', [ProductController::class, 'category'])->name('products.category');
