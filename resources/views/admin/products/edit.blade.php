@@ -18,14 +18,15 @@
                 <div class="input-group-prepend">
                     <div class="input-group-text">&euro;</div>
                 </div>
-                <input type="text" class="form-control" id="discounted_price" name="discounted_price" value="{{ $discountedPrice ? number_format($discountedPrice, 2) : '' }}">
+                <input type="text" class="form-control" id="discounted_price" name="discounted_price" value="{{ $originalPrice ? number_format($originalPrice, 2) : '' }}">
             </div>
         </div>
 
         <div class="form-group">
             <label for="discount">Kortingspercentage (%)</label>
-            <input type="number" min="0" max="100" id="discount" name="discount" class="form-control">
+            <input type="number" min="0" max="100" id="discount" name="discount" class="form-control" value="{{ $product->discount }}">
         </div>
+
 
 
 
