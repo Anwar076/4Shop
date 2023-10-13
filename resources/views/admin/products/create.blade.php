@@ -20,6 +20,10 @@
                 </div>
                 <input type="number" min="0" id="price" name="price" class="form-control" value="{{ old('price') }}">
             </div>
+            <div class="form-group">
+                <label for="discount_percentage">Kortingspercentage (%)</label>
+                <input type="number" min="0" max="100" id="discount_percentage" name="discount_percentage" class="form-control" value="{{ old('discount_percentage') }}">
+            </div>
         </div>
         <div class="form-group my-4">
             <div class="form-check form-check-inline">
