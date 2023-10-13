@@ -24,6 +24,10 @@ class UserStoriesTest extends TestCase
 
         $discount = $origPrice * ($product->discount / 100); //Korting in euro's
         $finalPrice = $origPrice - $discount;               //Haal korting af van prijs
+
+        //Aanpassing approved door br10:
+        $discPrice = $product->getPriceWithDiscountAttribute();
+
         $finalPrice = number_format($finalPrice, 2);               //Zorg altijd voor 2 decimalen
 
         $this->assertEquals($finalPrice, $discPrice);
@@ -61,7 +65,7 @@ class UserStoriesTest extends TestCase
 
     public function test_REQ9_ProductEditHasDiscount()
     {
-        
+
         $product = \App\Models\Product::where('discount', '>', '0')->first();
         $origPrice = $product->getRawOriginal('price');
         $user = \App\Models\User::first();
