@@ -56,10 +56,6 @@ class ProductController extends Controller
         // Haal de originele prijs op uit de database
         $originalPrice = $product->price;
 
-        // Reset de kortingswaarde naar nul, zodat de oorspronkelijke prijs wordt weergegeven
-        $product->discount = 0;
-        $product->save();
-
         $categories = Category::all();
 
         // Bereken de prijs na korting
