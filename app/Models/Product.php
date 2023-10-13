@@ -28,16 +28,16 @@ class Product extends Model
         return number_format($this->price, 2); // Als er geen korting is, retourneer de normale prijs
     }
 
-    public function getPriceAttribute($value)
-    {
-        // Als er een kortingspercentage is, bereken de prijs na korting
-        if ($this->discount > 0) {
-            $discountedPrice = $value - ($value * ($this->discount / 100));
-            return number_format($discountedPrice, 2);
-        }
+    // public function getPriceAttribute($value)
+    // {
+    //     // Als er een kortingspercentage is, bereken de prijs na korting
+    //     if ($this->discount > 0) {
+    //         $discountedPrice = $value - ($value * ($this->discount / 100));
+    //         return number_format($discountedPrice, 2);
+    //     }
 
-        return number_format($value, 2);
-    }
+    //     return number_format($value, 2);
+    // }
 
 
 
