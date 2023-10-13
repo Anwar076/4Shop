@@ -19,7 +19,7 @@
 		@foreach($products as $product)
 			<tr>
 				<td>{{ $product->title }}</td>
-				<td>&euro;{{ $product->price }}</td>
+				<td>&euro;{{ $product->getPriceWithDiscountAttribute() }}</td>
 				<td>
 					@if($product->active)
 						<span class="badge badge-success">Zichtbaar</span>
